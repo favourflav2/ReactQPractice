@@ -15,7 +15,7 @@ export default function Home() {
   const [lastProductSelectedImage, setLastProductSelectedImage] = React.useState("");
   const [open, setOpen] = React.useState(false);
 
-  
+ 
 
   return (
     <div className={`w-full  max-h-[calc(100vh_-_70px)] flex pt-[60px] `}>
