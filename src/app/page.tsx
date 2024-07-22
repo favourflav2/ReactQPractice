@@ -18,14 +18,11 @@ export default function Home() {
  
 
   return (
-    <div className={`w-full  max-h-[calc(100vh_-_70px)] flex pt-[60px] `}>
+    <div className={`w-full  max-h-[calc(100vh_-_60px)] flex `}>
       {/* Content */}
       <div className="w-full grid grid-cols-[12.5rem_1fr] ">
         {/* Left SIde */}
-        <ProductList
-          lastProductSelectedImage={lastProductSelectedImage}
-          setLastProductSelectedImage={setLastProductSelectedImage}
-        />
+        <ProductList lastProductSelectedImage={lastProductSelectedImage} setLastProductSelectedImage={setLastProductSelectedImage} />
 
         {/* Right Side */}
         <div className="w-full flex flex-col h-auto items-center">
@@ -44,11 +41,7 @@ export default function Home() {
 
       {/* Modal */}
       {open && (
-        <ModalIMade
-          lastProductSelectedImage={lastProductSelectedImage}
-          setLastProductSelectedImage={setLastProductSelectedImage}
-          setOpen={setOpen}
-        />
+        <ModalIMade lastProductSelectedImage={lastProductSelectedImage} setLastProductSelectedImage={setLastProductSelectedImage} setOpen={setOpen} />
       )}
     </div>
   );

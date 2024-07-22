@@ -1,4 +1,4 @@
-import { Product } from "../components/hooks/useGetData";
+import { Product } from "../hooks/useGetData";
 
 export const getLastItemInArray = (
   imageArr: Array<string>,
