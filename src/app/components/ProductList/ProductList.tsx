@@ -3,8 +3,8 @@ import LoadingCard from "../loading/LoadingCard";
 import useGetData from "../../hooks/useGetData";
 import { ProductCard } from "../card/ProductCard";
 import { Product } from "../../hooks/useGetData";
-import { useGetProductDataWithZod } from "@/app/hooks/useGetProductDataWithZod";
 import { useQuery } from "@tanstack/react-query";
+import useGetProductDataWithZod from "@/app/hooks/useGetProductDataWithZod";
 
 export interface IProductListProps {
   lastProductSelectedImage: string;
@@ -14,21 +14,15 @@ export interface IProductListProps {
 
 export default function ProductList({ lastProductSelectedImage, setLastProductSelectedImage }: IProductListProps) {
  
-  const { data, isLoading, error, isFetching } = useQuery({
-    queryKey: ["products"],
-    queryFn: useGetProductDataWithZod,
-    staleTime: 3600000,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-  });
-
+  const {data, isFetching, isLoading, error} = useGetProductDataWithZod()
   
 console.log({
   isFetching:isFetching,
   loading:isLoading,
   data:data
 })
+
+console.log(data)
   
 
   if (error) {

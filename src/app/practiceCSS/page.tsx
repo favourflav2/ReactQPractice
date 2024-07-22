@@ -1,6 +1,8 @@
 import React from 'react'
+import { QueryCache } from "@tanstack/react-query";
 
 export default function PracticePage() {
+
   return (
     <div className="max-h-[calc(100vh_-_70px)] pt-[60px]">
      
