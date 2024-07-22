@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model books {
+  bookId     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title      String
+  author     String
+  about      String
+  haveRead   Boolean
+  amazonLink String
+  img        String
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model car {
+  id           String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator      String  @db.Uuid
+  name         String  @db.VarChar(60)
+  price        Decimal @db.Decimal
+  mileage      Decimal @db.Decimal
+  downPayment  Decimal @db.Decimal
+  interest     Decimal @db.Decimal
+  term         Decimal @db.Decimal
+  img          String?
+  modal        String  @db.VarChar(100)
+  type         String? @db.VarChar(100)
+  extraPayment Decimal @db.Decimal
+  showInputs   Boolean
+  date         String
+  users        users   @relation(fields: [creator], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model contentCreator {
+  id        String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  twitter   String?
+  instagram String?
+  youtube   String
+  photo     String
+  about     String
+  videoLink videoLink[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model house {
+  id                  String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator             String  @db.Uuid
+  type                String? @db.VarChar(100)
+  streetAddress       String  @db.VarChar(100)
+  price               Decimal @db.Decimal
+  downPayment         Decimal @db.Decimal
+  interest            Decimal @db.Decimal
+  term                Decimal @db.Decimal
+  extraPayment        Decimal @db.Decimal
+  img                 String
+  propertyTax         Decimal @db.Decimal
+  insurance           Decimal @db.Decimal
+  mortgageInsurance   Decimal @db.Decimal
+  appreciation        Decimal @db.Decimal
+  opportunityCostRate Decimal @db.Decimal
+  maintenance         Decimal @db.Decimal
+  showTax             String? @db.VarChar(100)
+  showInputs          Boolean
+  rent                Decimal @db.Decimal
+  showOppCostInputs   Boolean
+  date                String
+  users               users   @relation(fields: [creator], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model login {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  hash      String    @db.VarChar(100)
+  otp       String?   @db.VarChar(4)
+  otpexpire DateTime? @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model retire {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  creator             String   @db.Uuid
+  type                String?  @db.VarChar(100)
+  currentAge          Decimal  @db.Decimal
+  retireAge           Decimal  @db.Decimal
+  lifeExpectancy      Decimal? @db.Decimal
+  savings             Decimal  @db.Decimal
+  monthlyContribution Decimal  @db.Decimal
+  budget              Decimal  @db.Decimal
+  preRate             Decimal  @db.Decimal
+  postRate            Decimal  @db.Decimal
+  inflation           Decimal  @db.Decimal
+  title               String   @db.VarChar(100)
+  showInputs          Boolean
+  date                DateTime @db.Timestamptz(6)
+  users               users    @relation(fields: [creator], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name   String   @db.VarChar(51)
+  email  String   @db.VarChar(100)
+  joined DateTime @db.Timestamp(6)
+  car    car[]
+  house  house[]
+  retire retire[]
+}
+
+model videoLink {
+  idVideoLink    String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title          String
+  link           String         @unique
+  aboutVideoLink String
+  creator        String         @db.Uuid
+  contentCreator contentCreator @relation(fields: [creator], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
