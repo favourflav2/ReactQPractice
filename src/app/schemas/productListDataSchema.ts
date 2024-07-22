@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const productListDataReviewObj = z.object({
+const productReview = z.object({
     comment: z.string(),
     date: z.string(),
     rating: z.number(),
@@ -8,7 +8,7 @@ const productListDataReviewObj = z.object({
     reviewerName: z.string()
 })
 
-const productListObject = z.object({
+const productObj = z.object({
   availabilityStatus: z.string(),
   brand:z.string().optional(),
   category: z.string(),
@@ -31,7 +31,7 @@ const productListObject = z.object({
   price: z.number(),
   rating: z.number(),
   returnPolicy: z.string(),
-  reviews: z.array(productListDataReviewObj),
+  reviews: z.array(productReview),
   shippingInformation: z.string(),
   sku: z.string(),
   stock: z.number(),
@@ -44,12 +44,12 @@ const productListObject = z.object({
 
 
 
-export const productListDataSchema = z.object({
+export const productListApi = z.object({
   limit: z.number({ required_error: "There needs to be a number value for limit" }),
   skip: z.number({ required_error: "There needs to be a number value for skip" }),
   total: z.number({ required_error: "There needs to be a number value for total" }),
-  products: z.array(productListObject)
+  products: z.array(productObj)
 });
 
 
-export type ProductListDataSchemaType = z.infer<typeof productListDataSchema>
+export type ProductListApiType = z.infer<typeof productListApi>

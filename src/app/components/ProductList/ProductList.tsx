@@ -14,15 +14,8 @@ export interface IProductListProps {
 
 export default function ProductList({ lastProductSelectedImage, setLastProductSelectedImage }: IProductListProps) {
  
-  const {data, isFetching, isLoading, error} = useGetProductDataWithZod()
+  const {data, isFetching, isLoading, error} = useGetProductDataWithZod(true)
   
-console.log({
-  isFetching:isFetching,
-  loading:isLoading,
-  data:data
-})
-
-console.log(data)
   
 
   if (error) {
@@ -30,7 +23,7 @@ console.log(data)
   }
   return (
     <div className="w-[200px] h-full overflow-y-auto flex flex-col">
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <LoadingCard />
       ) : (
         data?.products.map((item) => <ProductCard item={item} key={item.id} setLastProductSelectedImage={setLastProductSelectedImage} />)

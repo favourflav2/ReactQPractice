@@ -1,15 +1,15 @@
-import { productListDataSchema, ProductListDataSchemaType } from "../schemas/productListDataSchema";
+import { productListApi } from "../schemas/productListDataSchema";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetProductDataWithZod = () => {
-  const { data, isLoading, error, isFetching } = useQuery({
+const useGetProductDataWithZod = (fetchOnMount:boolean) => {
+  const { data, isLoading, error, isFetching, refetch } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
       const res = await fetch("https://dummyjson.com/products?limit=10&skip=10");
       const data = await res.json();
 
       // client side validation
-      const zodValidatingData = productListDataSchema.safeParse(data);
+      const zodValidatingData = productListApi.safeParse(data);
 
       // Not sure how to handle errors here ... I can loop through array and return and throw ... but going to ask if theres another way
       if (!zodValidatingData.success) {
@@ -26,6 +26,7 @@ const useGetProductDataWithZod = () => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
+    enabled:fetchOnMount
   });
 
   return {
@@ -33,6 +34,7 @@ const useGetProductDataWithZod = () => {
     isLoading,
     isFetching,
     error,
+    refetch
   };
 };
 
