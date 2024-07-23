@@ -4,6 +4,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useGetDataFromPostgres from "../hooks/useGetDataFromPostgres";
 import { CircularProgress } from "@mui/material";
 
+type UserObj = {
+  id?:string;
+  name:string;
+  title:string;
+}
+
 
 
 const PracticeMutation = () => {
@@ -16,22 +22,28 @@ const PracticeMutation = () => {
   const {data,isFetching,isLoading,error} = useGetDataFromPostgres({ method: "GET", url: "http://localhost:3000/api/hello/" });
 
   const mutatation = useMutation({
-    mutationFn: (user: any) => {
+    mutationFn: (user: UserObj) => {
       return fetch("http://localhost:3000/api/hello", {
         method: "POST",
         body: JSON.stringify(user),
       });
     },
-    onSuccess(data, variables, context) {
-     
-    queryClient.invalidateQueries({ queryKey: ["database Fav"] });
-    queryClient.invalidateQueries({ queryKey: ['reminders'] })
-  
+    // Not need for optimistic update
+    // onSuccess(data, variables, context) {
+    // queryClient.invalidateQueries({ queryKey: ["database Fav"] });
+    // },
+    // onError(error, variables, context) {
+    //   // Error goes here
+    // },
+
+    onMutate: (user) => {
+      // called before the mutation fn is fired
     },
-    onError(error, variables, context) {
-      console.log(error, "data");
-      console.log(variables, "variables");
-      console.log(context, "context");
+    onError: () => {
+
+    },
+    onSettled: () => {
+
     },
     mutationKey: ["database Fav"],
   });

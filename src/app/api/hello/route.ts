@@ -1,4 +1,6 @@
 const { Pool, types } = pg;
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import pg from "pg";
 
 const pool = new Pool({
@@ -10,22 +12,24 @@ pool.on("error", (err, client) => {
   process.exit(-1);
 });
 
-
-export async function GET(req:Request,res:Response) {
+export async function GET() {
     const data = await pool.query("SELECT * FROM fav")
-  return  Response.json((data.rows))
+   return NextResponse.json(data.rows)
 }
 
-export async function POST(req: Request, res: Response){
-    try{
-        
-        const fav = await req.json()
-        const {name,title} = fav
-        console.log(fav)
-        const res = await pool.query('INSERT INTO fav (name, title) VALUES ($1, $2) RETURNING *',[name, title])
-        return Response.json(res.rows)
-        
-    }catch(e){
-        console.log(e)
-    }
+
+
+
+
+export async function POST(req: Request, res: NextResponse) {
+  try {
+
+    const fav = await req.json()
+  
+    const {name,title} = fav
+    const res = await pool.query('INSERT INTO fav (name, title) VALUES ($1, $2) RETURNING *',[name, title])
+    return NextResponse.json(res.rows[0])
+  } catch (e) {
+    console.log(e);
+  }
 }
