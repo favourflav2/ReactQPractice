@@ -19,7 +19,11 @@ const PracticeMutation = () => {
   });
   const queryClient = useQueryClient();
 
-  const {data,isFetching,isLoading,error} = useGetDataFromPostgres({ method: "GET", url: "http://localhost:3000/api/hello/" });
+  const { data, isFetching, isLoading, error } = useGetDataFromPostgres({
+    method: "GET",
+    url: "http://localhost:3000/api/hello/",
+    key: ["database Fav"],
+  });
 
   const mutatation = useMutation({
     mutationFn: (user: UserObj) => {
@@ -28,22 +32,11 @@ const PracticeMutation = () => {
         body: JSON.stringify(user),
       });
     },
-    // Not need for optimistic update
-    // onSuccess(data, variables, context) {
-    // queryClient.invalidateQueries({ queryKey: ["database Fav"] });
-    // },
-    // onError(error, variables, context) {
-    //   // Error goes here
-    // },
-
-    onMutate: (user) => {
-      // called before the mutation fn is fired
+    onSuccess() {
+    queryClient.invalidateQueries({ queryKey: ["database Fav"] });
     },
-    onError: () => {
-
-    },
-    onSettled: () => {
-
+    onError(error, variables, context) {
+      // Error goes here
     },
     mutationKey: ["database Fav"],
   });

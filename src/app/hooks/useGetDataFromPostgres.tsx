@@ -6,12 +6,13 @@ type GetDataProps = {
     body?:{
         [key:string]: any
     };
-    url:string
+    url:string;
+    key:Array<string>
 }
 
-const useGetDataFromPostgres = ({method, body,url}: GetDataProps) => {
+const useGetDataFromPostgres = ({method, body,url, key}: GetDataProps) => {
 const {data, isLoading, isFetching, error} = useQuery({
-    queryKey:['database Fav'],
+    queryKey:key,
     queryFn: async () => {
         const res = await fetch(url)
         const data = await res.json();
